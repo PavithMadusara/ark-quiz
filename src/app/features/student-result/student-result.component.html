@@ -1,0 +1,28 @@
+<div class="w-full bg-blue-500 flex flex-row text-white">
+  <div class="grid place-content-center ml-5">
+    <i nz-icon nzType="menu" nzTheme="outline"></i>
+  </div>
+  <div class="grid place-content-center ml-5">
+    <img
+      nz-image
+      width="30px"
+      height="30px"
+      nzSrc="assets/applogo.png"
+      alt=""
+    />
+  </div>
+  <div class="prose-2xl text-white mx-5 my-2">
+    ArkQuiz
+  </div>
+  <div class="flex-1">
+  </div>
+  <div class="grid place-content-center mr-10">
+    <a [nzDropdownMenu]="menu" class="ml-12" nz-dropdown>
+      <nz-avatar class="" nzIcon="user" nzSrc="assets/logo.png"></nz-avatar>
+    </a>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <app-profile-dropdown></app-profile-dropdown>
+    </nz-dropdown-menu>
+  </div>
+</div>
+<app-result-table></app-result-table>

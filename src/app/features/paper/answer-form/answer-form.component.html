@@ -1,0 +1,77 @@
+<div class="w-full h-full p-5 overflow-y-scroll no-scrollbar flex flex-col items-center">
+  <div class="flex flex-col bg-gray-100 p-5 rounded  w-full md:w-2/3">
+    <nz-steps [nzCurrent]="currentQuestionIndex" nzDirection="horizontal" nzSize="small">
+      <nz-step nzTitle="Overview"></nz-step>
+      <nz-step nzTitle="In Progress"
+               *ngIf="currentQuestionIndex === 0"></nz-step>
+      <nz-step *ngFor="let q of paper?.questions; let i=index" [nzTitle]="'Question '+(i+1)"
+               [style]="currentQuestionIndex === i+1 ? 'display:block':'display:none'"></nz-step>
+      <nz-step nzTitle="Finished"></nz-step>
+    </nz-steps>
+
+    <div>
+      <div class="steps-content mt-5" *ngIf="currentQuestionIndex ===0">
+        <div class="ml-3">
+          <label class="prose-xl font-bold">{{paper?.title}}</label>
+          <div class="flex flex-row items-center">
+            <label class="text-gray-600">Subject : {{paper?.subject}}</label>
+          </div>
+          <div class="flex flex-row items-center">
+            <label class="text-gray-600">Questions : {{paper?.questionCount}}</label>
+          </div>
+          <div class="flex flex-row items-center">
+            <label class="text-gray-600">Published : {{paper?.publishDate|date:'yyyy LLL dd'}}</label>
+          </div>
+          <div class="flex flex-row items-center">
+            <label class="text-gray-600">Expire : {{paper?.expireDate|date:'yyyy LLL dd'}}</label>
+          </div>
+        </div>
+      </div>
+      <div class="steps-content" *ngIf="currentQuestionIndex !==0 && currentQuestionIndex <paper?.questions?.length+1">
+        <div class="w-full bg-white p-2 rounded mt-5">
+          <p class="w-full text-center prose" *ngIf="imageLoading">Loading...</p>
+          <div class="flex flex-row" *ngIf="!imageLoading">
+            <div class="prose-xl flex-1">{{currentQuestion.title}}</div>
+            <div class="prose-xl mx-5">Time : {{currentQuestion.time - currentQuestion.timeTaken}}</div>
+          </div>
+          <div *ngIf="currentQuestion?.images?.length>0" class="flex flex-col items-center my-2">
+            <img
+              *ngFor="let image of currentQuestion?.images"
+              nz-image
+              [nzSrc]="image"
+              alt=""
+              (load)="imageLoaded()"
+              nzDisablePreview
+            />
+          </div>
+          <nz-radio-group [(ngModel)]="result.studentAnswers[currentQuestionIndex-1]" *ngIf="!imageLoading"
+                          class="mb-5" [disabled]="currentQuestion.time === currentQuestion.timeTaken">
+            <div class="flex flex-col gap-2">
+              <label *ngFor="let answer of currentQuestion?.answers |randomOrder" nz-radio
+                     [nzValue]="answer?.index-1">{{answer?.title}}</label>
+            </div>
+          </nz-radio-group>
+        </div>
+      </div>
+      <div class="my-5">
+        <div class="steps-content" *ngIf="currentQuestionIndex > paper?.questions?.length">
+          <!--          Congratulation You've reached the end.-->
+          <app-result-sheet [inputValue]="result"></app-result-sheet>
+        </div>
+        <div class="steps-action">
+          <button nz-button nzType="default" (click)="next()" *ngIf="currentQuestionIndex ===0 && !loading">
+            <span>Start</span>
+          </button>
+          <button nz-button nzType="default" (click)="next()"
+                  *ngIf="currentQuestionIndex !==0 && currentQuestionIndex <= paper?.questions?.length && !imageLoading">
+            <span>Next</span>
+          </button>
+          <button nz-button nzType="primary" (click)="done()"
+                  *ngIf="currentQuestionIndex > paper?.questions?.length &&!loading" class="mt-5">
+            <span>Finish</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

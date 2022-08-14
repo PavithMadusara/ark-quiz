@@ -1,0 +1,37 @@
+<div class="w-full h-full prose-xl grid place-content-center" *ngIf="loading">Loading...</div>
+<div *ngIf="!loading">
+  <div class="flex flex-row mb-5">
+    <div class="flex-1">
+      <div class="prose-xl">{{inputValue.paper.title}}</div>
+      <div>Subject : {{inputValue.paper.subject}}</div>
+    </div>
+    <div class="flex-1 text-right">
+      <div class="prose-xl">{{inputValue.studentName}}</div>
+      <div>{{inputValue.date|date:'yyyy LLL dd'}}</div>
+    </div>
+  </div>
+  <nz-divider></nz-divider>
+  <div>
+    <div *ngFor="let question of inputValue.paper?.questions;let i=index" class="flex flex-row mb-2">
+      <div class="flex-1">
+        <p class="prose mb-1"><span class="mr-3">{{i + 1}}</span>{{question.title}}</p>
+        <div class="flex flex-row">
+          <div class="flex-1">
+            <p>Correct :{{question.answers[question.correctAnswer - 1].title}}</p>
+            <p>Selected :{{question.answers[inputValue.studentAnswers[i]]?.title}}</p>
+          </div>
+          <div class="flex-1">
+            <p>Provided Time : {{question.time}}</p>
+            <p>Time Taken : {{question.timeTaken}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-row items-center">
+        <nz-progress [nzPercent]="100" nzType="circle" [nzWidth]="40"
+                     *ngIf="(question.answers[question.correctAnswer - 1].title === question.answers[inputValue.studentAnswers[i]]?.title)"></nz-progress>
+        <nz-progress [nzPercent]="100" nzType="circle" [nzWidth]="40" nzStatus="exception"
+                     *ngIf="(question.answers[question.correctAnswer - 1].title != question.answers[inputValue.studentAnswers[i]]?.title)"></nz-progress>
+      </div>
+    </div>
+  </div>
+</div>

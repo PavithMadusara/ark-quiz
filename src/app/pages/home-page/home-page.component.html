@@ -1,0 +1,62 @@
+<div class="w-full bg-blue-500 flex flex-row text-white">
+  <div class="grid place-content-center ml-5">
+    <i nz-icon nzType="menu" nzTheme="outline"></i>
+  </div>
+  <div class="grid place-content-center ml-5">
+    <img
+      nz-image
+      width="30px"
+      height="30px"
+      nzSrc="assets/applogo.png"
+      alt=""
+    />
+  </div>
+  <div class="prose-2xl text-white mx-5 my-2">
+    ArkQuiz
+  </div>
+  <div class="flex-1">
+    <button (click)="makeMeAdmin()" nz-button nzType="default">View as Admin</button>
+    <button (click)="makeMeStudent()" nz-button nzType="default">View as Student</button>
+  </div>
+  <div class="grid place-content-center mr-10">
+    <a [nzDropdownMenu]="menu" class="ml-12" nz-dropdown>
+      <nz-avatar class="" nzIcon="user" nzSrc="assets/logo.png"></nz-avatar>
+    </a>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <app-profile-dropdown></app-profile-dropdown>
+    </nz-dropdown-menu>
+  </div>
+</div>
+<nz-tabset nzCentered="true">
+  <nz-tab nzTitle="Papers">
+    <ng-template nz-tab>
+      <div class="w-full h-full flex flex-col px-5 md:px-0 md:items-center">
+        <app-paper></app-paper>
+      </div>
+    </ng-template>
+  </nz-tab>
+  <nz-tab nzTitle="Results" *ngIf="(user$|async)?.userLevel ==='Student'">
+    <ng-template nz-tab>
+      <div class="w-full h-full flex flex-col px-5 md:px-0 md:items-center">
+      <app-result></app-result>
+      </div>
+    </ng-template>
+  </nz-tab>
+  <nz-tab nzTitle="Create Paper" *ngIf="(user$|async)?.userLevel ==='Admin' ">
+    <ng-template nz-tab>
+      <div class="w-full h-full flex flex-col px-5 md:px-0 md:items-center">
+        <app-paper-form></app-paper-form>
+      </div>
+    </ng-template>
+  </nz-tab>
+  <nz-tab nzTitle="Payments" *ngIf="(user$|async)?.userLevel ==='Admin' ">
+    <ng-template nz-tab>
+      <app-payment></app-payment>
+    </ng-template>
+  </nz-tab>
+  <nz-tab nzTitle="Users" *ngIf="(user$|async)?.userLevel ==='Admin' ">
+    <ng-template nz-tab>
+      <app-user></app-user>
+    </ng-template>
+  </nz-tab>
+</nz-tabset>

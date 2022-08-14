@@ -1,0 +1,6 @@
+<div class="w-64 h-72 bg-white p-4 rounded flex flex-col shadow shadow-black">
+  <label class="prose-xl">{{(user$|async)?.name}}</label>
+  <label>{{(user$|async)?.email}}</label>
+  <nz-divider></nz-divider>
+  <button nz-button nzType="danger" (click)="signOut()">Sign Out</button>
+</div>

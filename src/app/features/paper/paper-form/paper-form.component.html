@@ -1,0 +1,150 @@
+<div class="overflow-y-scroll h-full no-scrollbar">
+  <form (ngSubmit)="onSubmit()" [formGroup]="form" class="flex flex-col" nz-form="">
+    <ng-template #paperExtra>
+      <a (click)="resetForm()">Clear</a>
+    </ng-template>
+    <nz-card nzTitle="New Paper" [nzExtra]="paperExtra" class="rounded-xl mx-5 mt-1 bg-gray-50">
+      <div class="flex flex-row gap-5">
+        <div class="flex-1">
+          <nz-form-item>
+            <nz-form-label class="w-24" nzRequired>Subject</nz-form-label>
+            <nz-form-control nzErrorTip="Subject is Required !">
+              <label>
+                <input formControlName="subject" nz-input placeholder="Subject"/>
+              </label>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label class="w-24" nzRequired>Title</nz-form-label>
+            <nz-form-control nzErrorTip="Title is Required !">
+              <label>
+                <input formControlName="title" nz-input placeholder="Title"/>
+              </label>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="flex-1">
+          <nz-form-item>
+            <nz-form-label class="w-24" nzRequired>Publish Date</nz-form-label>
+            <nz-form-control nzErrorTip="Publish Date is Required !">
+              <nz-date-picker formControlName="publishDate" nzMode="date" class="w-full"></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label class="w-24" nzRequired>Expire Date</nz-form-label>
+            <nz-form-control nzErrorTip="Expire Date is Required !">
+              <nz-date-picker formControlName="expireDate" nzMode="date" class="w-full"></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <nz-form-item>
+        <nz-form-label class="w-24">Description</nz-form-label>
+        <nz-form-control nzErrorTip="Description is Required !">
+          <label>
+            <input formControlName="description" nz-input placeholder="Description"/>
+          </label>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-card>
+    <div formArrayName="questions">
+      <div *ngFor="let question of getQuestions().controls; let i=index" [formGroupName]="i">
+        <ng-template #questionExtra>
+          <a (click)="removeQuestion(i)">Remove</a>
+        </ng-template>
+        <nz-card [nzTitle]="'Question '+(i+1)" [nzExtra]="questionExtra" class="rounded-xl mx-5 mt-5 bg-gray-50">
+          <nz-form-item>
+            <nz-form-label class="w-28" nzRequired>Question</nz-form-label>
+            <nz-form-control nzErrorTip="title is Required !">
+              <label>
+                <input formControlName="title" nz-input placeholder="Question"/>
+              </label>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label class="w-28" >Image</nz-form-label>
+            <nz-form-control nzErrorTip="Images is Required !">
+              <label>
+                <nz-upload
+                  [nzCustomRequest]="uploadFile"
+                  nzListType="picture-card"
+                  [nzData]="i"
+                  [(nzFileList)]="fileList[i]"
+                  [nzShowButton]="fileList[i].length < 1"
+                  [nzPreview]="handlePreview"
+                  (nzChange)="handleChange"
+                  [nzRemove]="removeImage"
+                >
+                  <div>
+                    <i nz-icon nzType="plus"></i>
+                    <div style="margin-top: 8px">Upload</div>
+                  </div>
+                </nz-upload>
+              </label>
+            </nz-form-control>
+          </nz-form-item>
+          <div class="flex flex-row gap-5 w-full">
+            <nz-form-item class="flex-1">
+              <nz-form-label class="w-28" nzRequired>Time (seconds)</nz-form-label>
+              <nz-form-control nzErrorTip="Time is Required !">
+                <label>
+                  <nz-input-number class="w-full" formControlName="time"></nz-input-number>
+                </label>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item class="flex-1">
+              <nz-form-label class="w-28" nzRequired>Correct Answer</nz-form-label>
+              <nz-form-control nzErrorTip="Correct Answer is Required !">
+                <label>
+                  <nz-input-number class="w-full" formControlName="correctAnswer"></nz-input-number>
+                </label>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div formArrayName="answers">
+            <div *ngFor="let answer of getAnswerList(i).controls; let j =index" [formGroupName]="j">
+              <nz-form-item>
+                <nz-form-label class="w-24" nzRequired>{{j + 1}}</nz-form-label>
+                <nz-form-control nzErrorTip="Title is Required !">
+                  <nz-input-group [nzSuffix]="suffixIconButton">
+                    <input formControlName="title" nz-input placeholder="Answer"/>
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+              <ng-template #suffixIconButton>
+                <button nz-button nzSize="small" nzType="default" nzSearch (click)="removeAnswer(i,j)">
+                  <i nz-icon                                                                                                          nzType="close"></i>
+                </button>
+              </ng-template>
+            </div>
+          </div>
+          <nz-form-item>
+            <nz-form-control>
+              <button class="mx-5 mt-5 rounded-2xl" nz-button nzType="primary" type="button"
+                      (click)="addNewAnswerField(i)">
+                Add Answer
+              </button>
+            </nz-form-control>
+          </nz-form-item>
+        </nz-card>
+      </div>
+    </div>
+    <nz-form-item>
+      <nz-form-control>
+        <button class="mx-5 mt-5 rounded-2xl" nz-button nzType="primary" type="button"
+                (click)="addNewQuestionField()">
+          Add New Question
+        </button>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-divider></nz-divider>
+    <nz-form-item class="flex flex-row">
+      <div class="flex-1"></div>
+      <nz-form-control>
+        <button [disabled]="form.invalid" nz-button nzType="primary" type="submit" [nzLoading]="loading" >
+          Save Paper
+        </button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</div>

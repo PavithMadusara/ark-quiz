@@ -1,0 +1,50 @@
+<div class="rounded w-full bg-gray-100 p-2 flex flex-row justify-between my-2">
+  <div class="ml-3">
+    <label class="prose-xl font-bold">{{inputValue.title}}</label>
+    <div class="flex flex-row items-center">
+      <label class="text-gray-600">Subject : {{inputValue.subject}}</label>
+    </div>
+    <div class="flex flex-row items-center">
+      <label class="text-gray-600">Questions : {{inputValue.questionCount}}</label>
+    </div>
+    <div class="flex flex-row items-center">
+      <label class="text-gray-600">Published : {{inputValue.publishDate|date:'yyyy LLL dd'}}</label>
+    </div>
+    <div class="flex flex-row items-center">
+      <label class="text-gray-600">Expire : {{inputValue.expireDate|date:'yyyy LLL dd'}}</label>
+    </div>
+  </div>
+  <div class="w-12 sm:w-20 md:w-48"></div>
+  <div class="w-32 flex flex-row">
+    <div class="w-full self-center">
+      <button class="w-full mb-4" nz-button nzShape="round" nzSize="default"
+              *ngIf="isPaid && (user$|async)?.userLevel ==='Student'"
+              nzType="primary" routerLink="answer/{{inputValue.documentId}}">
+        <i nz-icon nzType="file-protect"></i>
+        Open
+      </button>
+      <button class="w-full mb-4" nz-button nzShape="round" nzSize="default" *ngIf="(user$|async)?.userLevel ==='Admin'"
+              nzType="primary" routerLink="answer/{{inputValue.documentId}}">
+        <i nz-icon nzType="file-protect"></i>
+        Test Run
+      </button>
+      <button class="w-full my-2" nz-button nzShape="round" nzSize="default"
+              *ngIf="!isPaid && (user$|async)?.userLevel !=='Admin'" nz-popover
+              nzPopoverContent="Please contact your teacher or institute to add payments"
+              nzType="dashed">
+        Add Payment
+      </button>
+      <button [routerLink]="'result/'+inputValue.documentId" class="w-full mb-2" nz-button nzType="primary"
+              nzShape="round"
+              nzSize="default" *ngIf="(user$|async)?.userLevel ==='Admin'">
+        <i nz-icon nzType="eye"></i>
+        Results
+      </button>
+      <button (click)="deleteItem()" class="w-full" nz-button nzDanger nzShape="round"
+              nzSize="default" *ngIf="(user$|async)?.userLevel ==='Admin'">
+        <i nz-icon nzType="edit"></i>
+        Delete
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+<div class="m-5">
+  <div class="flex flex-row gap-1 mb-1">
+    <input (keyup)="onSearch()" [(ngModel)]="filterString" nz-input placeholder="Search" type="text"
+           class="bg-primaryColor">
+    <button (click)="fetchData()"
+            class="border-none flex flex-row align-middle"
+            nz-button nzType="primary">
+      <i class="pt-0.5" nz-icon nzType="reload"></i>
+      Refresh
+    </button>
+  </div>
+  <nz-table #dataTable
+            [nzData]=(filteredData)
+            [nzLoading]="isLoading"
+            [nzPageIndex]="pageIndex"
+            [nzPageSizeOptions]="[9,20,50,100]"
+            [nzPageSize]="pageSize"
+            [nzTotal]="totalDataItems"
+            nzFrontPagination="false"
+            nzShowPagination="true"
+            nzShowSizeChanger="true"
+            nzSize="small"
+  >
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of dataTable.data">
+      <td>{{data.studentName}}</td>
+      <td>
+        <a (click)="viewItem(data)" class="prose text-green-400">View</a>
+        <nz-divider nzType="vertical"></nz-divider>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+  <nz-modal (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
+            [nzTitle]="modelTitle" [nzVisible]="isModelVisible" [nzWidth]="modelWidth">
+    <ng-container *nzModalContent>
+      <app-result-sheet [inputValue]="forUpdate"></app-result-sheet>
+    </ng-container>
+  </nz-modal>
+</div>

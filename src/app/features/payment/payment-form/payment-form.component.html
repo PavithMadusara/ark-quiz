@@ -1,0 +1,26 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="form" class="flex flex-row w-full" nz-form="">
+  <div class="w-full">
+    <nz-form-item>
+        <nz-form-label class="w-28" nzRequired>Student Phone</nz-form-label>
+        <nz-form-control nzErrorTip="Student Phone Number is Required !">
+            <label>
+              <input formControlName="phone" nz-input placeholder="Student Phone Number"/>
+            </label>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label class="w-28" nzRequired>Month</nz-form-label>
+        <nz-form-control nzErrorTip="Month is Required !">
+            <nz-date-picker formControlName="month" nzMode="month"></nz-date-picker>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <div class="w-28"></div>
+        <nz-form-control>
+            <button [disabled]="form.invalid && !inputValue" class="w-full" nz-button nzType="primary" type="submit" [nzLoading]="loading">
+                Save
+            </button>
+        </nz-form-control>
+    </nz-form-item>
+  </div>
+</form>

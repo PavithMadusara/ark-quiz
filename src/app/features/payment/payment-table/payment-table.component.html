@@ -1,0 +1,52 @@
+<div class="m-5">
+  <div class="flex flex-row gap-1 mb-1">
+    <input (keyup)="onSearch()" [(ngModel)]="filterString" nz-input placeholder="Search" type="text"
+           class="bg-primaryColor">
+    <nz-date-picker [(ngModel)]="selectedMonth" (ngModelChange)="fetchData()" nzMode="month"></nz-date-picker>
+
+    <button (click)="fetchData()"
+            class="border-none flex flex-row align-middle"
+            nz-button nzType="primary">
+      <i class="pt-0.5" nz-icon nzType="reload"></i>
+      Refresh
+    </button>
+    <button class="border-none bg-purple-500 text-white flex flex-row align-middle" nz-button
+            (click)="showCreateForm()">
+      <i class="pt-0.5" nz-icon nzType="plus"></i>
+      New Payment
+    </button>
+  </div>
+  <nz-table #dataTable
+            [nzData]=(filteredData)
+            [nzLoading]="isLoading"
+            [nzPageIndex]="pageIndex"
+            [nzPageSizeOptions]="[9,20,50,100]"
+            [nzPageSize]="pageSize"
+            [nzTotal]="totalDataItems"
+            nzFrontPagination="false"
+            nzShowPagination="true"
+            nzShowSizeChanger="true"
+            nzSize="small"
+  >
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Phone</th>
+      <th>Month</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of dataTable.data">
+      <td>{{data.name}}</td>
+      <td>{{data.phone}}</td>
+      <td>{{data.month}}</td>
+    </tr>
+    </tbody>
+  </nz-table>
+  <nz-modal (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
+            [nzTitle]="modelTitle" [nzVisible]="isModelVisible" [nzWidth]="modelWidth">
+    <ng-container *nzModalContent>
+      <app-payment-form></app-payment-form>
+    </ng-container>
+  </nz-modal>
+</div>

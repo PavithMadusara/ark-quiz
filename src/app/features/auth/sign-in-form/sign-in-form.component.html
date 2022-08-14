@@ -1,0 +1,45 @@
+<form (ngSubmit)="onPhoneSubmit()" [formGroup]="phoneForm" class="flex flex-row w-full mt-4" nz-form nzLayout="vertical"
+      *ngIf="selectedForm==='PHONE_FORM'">
+  <div class="w-full">
+    <nz-form-item>
+      <nz-form-label class="">Enter your phone number</nz-form-label>
+      <nz-form-control nzErrorTip="Phone is Required !">
+        <label>
+          <input formControlName="phone" nz-input placeholder="Phone"/>
+        </label>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <div class="w-24"></div>
+      <nz-form-control>
+        <button [disabled]="phoneForm.invalid" class="w-full" nz-button nzType="primary" type="submit" [nzLoading]="loading">
+          Send Code
+        </button>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</form>
+
+<div id="recaptcha-container"></div>
+
+<form (ngSubmit)="onPhoneCodeSubmit()" [formGroup]="phoneCodeForm" class="flex flex-row w-full mt-4" nz-form nzLayout="vertical"
+      *ngIf="selectedForm==='PHONE_CONFIRM_CODE'">
+  <div class="w-full">
+    <nz-form-item>
+      <nz-form-label class="w-24">Code</nz-form-label>
+      <nz-form-control nzErrorTip="Code is Required !">
+        <label>
+          <input formControlName="code" nz-input placeholder="Code"/>
+        </label>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <div class="w-24"></div>
+      <nz-form-control>
+        <button [disabled]="phoneCodeForm.invalid" class="w-full" nz-button nzType="primary" type="submit" [nzLoading]="loading">
+          Submit
+        </button>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</form>
